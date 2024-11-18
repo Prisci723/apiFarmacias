@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "83ad66de-a337-4d78-b429-55f9b7afd493",
+		"name": "Movil Farmacias",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38984989"
+	},
+	"item": [
+		{
+			"name": "ProductoFarmacia",
+			"item": [
+				{
+					"name": "obtenerProductosFarmacia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/farmacia/1/productos",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"farmacia",
+								"1",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtenerProductosFarmaciaCategoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/farmacia/1/productos/categoria/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"farmacia",
+								"1",
+								"productos",
+								"categoria",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtenerProductosFarmaciaPalabraClave",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/farmacia/1/productos/palabra/Li",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"farmacia",
+								"1",
+								"productos",
+								"palabra",
+								"Li"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Farmacia",
+			"item": [
+				{
+					"name": "obtenerFarmaciaPorUbicacion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/ubicacion/4/farmacia",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"ubicacion",
+								"4",
+								"farmacia"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ubicacion",
+			"item": [
+				{
+					"name": "obtenerUbicacionMasCercana",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/ubicacion/4/farmacia",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"ubicacion",
+								"4",
+								"farmacia"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
