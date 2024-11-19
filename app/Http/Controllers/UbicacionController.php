@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farmacia;
+use App\Models\Ubicaciones;
 use DB;
 use Illuminate\Http\Request;
 
@@ -116,5 +117,11 @@ class UbicacionController extends Controller
         
     //     return response()->json($farmacia, 200);
     // }
-
+    public function show($id){
+        $ubicacion = Ubicaciones::find($id);
+        if (!$ubicacion) {
+            return response()->json(['message' => 'ubicacion no encontrada'], 404);
+        }
+        return response()->json($ubicacion, 200);
+    }
 }

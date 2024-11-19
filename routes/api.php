@@ -53,3 +53,5 @@ Route::get('/ubicacion/{id_ubicacion}/farmacia', [farmaciaController::class, 'ob
 
 //obtener farmacia mas cercana segun el horario o el turno
 Route::get('/ubicacion/{latitud}/{longitud}',[UbicacionController::class,'obtenerUbicacionMasCercana'] );
+//Obtener ubicacion dado el id de la ubicacion 
+Route::get('/ubicacion/{id_ubicacion}', [UbicacionController::class, 'show']);
