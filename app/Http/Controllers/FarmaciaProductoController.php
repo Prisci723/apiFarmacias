@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FarmaciaProducto;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -37,4 +38,18 @@ class FarmaciaProductoController extends Controller
         
         return response()->json($productos, 200);
     }
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id_farmacia' => 'required|integer|exists:farmacias,id',
+            'id_producto' => 'required|integer|exists:productos,id',
+            'id_sucursal' => 'required|integer|exists:sucursales,id',
+            'precio' => 'required|numeric|min:0',
+            'disponibilidad' => 'required|boolean',
+        ]);
+    
+        $farmaciaProducto = FarmaciaProducto::create($validatedData);
+        return response()->json($farmaciaProducto, 201);
+    }
+    
 }

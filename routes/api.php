@@ -43,7 +43,6 @@ Route::get('/farmacia/{id_farmacia}/productos', [FarmaciaProductoController::cla
 //obtener productos de una farmacia por categoria
 Route::get('/farmacia/{id_farmacia}/productos/categoria/{id_categoria}', [FarmaciaProductoController::class, 'obtenerProductosFarmaciaCategoria']);
 //obtener productos de una farmacia con una palabra clave en el nombre del producto
-Route::get('/farmacia/{id_farmacia}/productos/palabra/{palabra}', [FarmaciaProductoController::class, 'obtenerProductoPalabraClave']);
 
 //Categoria
 Route::get('/categoria/{id_farmacia}/farmacia',[CategoriaController::class,'obtenerCategoriasFarmacia'] );
@@ -55,3 +54,5 @@ Route::get('/ubicacion/{id_ubicacion}/farmacia', [farmaciaController::class, 'ob
 Route::get('/ubicacion/{latitud}/{longitud}',[UbicacionController::class,'obtenerUbicacionMasCercana'] );
 //Obtener ubicacion dado el id de la ubicacion 
 Route::get('/ubicacion/{id_ubicacion}', [UbicacionController::class, 'show']);
+//Guardar farmacia producto 
+Route::post('/farmacia-producto', [FarmaciaProductoController::class, 'store']);

@@ -9,69 +9,61 @@ use Illuminate\Http\Request;
 class UbicacionController extends Controller
 {
     public function obtenerUbicacionMasCercana($latitud, $longitud)
-{
-    // Redondeamos las coordenadas de entrada a 4 decimales
-    $latitud = round($latitud, 4);
-    $longitud = round($longitud, 4);
+    {
+        // Redondeamos las coordenadas de entrada a 4 decimales
+        $latitud = round($latitud, 4);
+        $longitud = round($longitud, 4);
+        
+        // Buscamos la farmacia más cercana con turno 1
+        $farmacia = DB::table('farmacias')
+            ->join('ubicaciones', 'farmacias.id_ubicacion', '=', 'ubicaciones.id')
+            ->select(
+                'farmacias.id',
+                'farmacias.nombre',
+                'farmacias.telefono',
+                'farmacias.email',
+                'farmacias.horario',
+                'farmacias.servicios',
+                'farmacias.turno',
+                'farmacias.id_ubicacion',
+                'ubicaciones.id as ubicacion_id',
+                'ubicaciones.direccion',
+                DB::raw('ROUND(ubicaciones.latitud, 4) as latitud'),
+                DB::raw('ROUND(ubicaciones.longitud, 4) as longitud')
+            )
+            ->selectRaw(
+                'ROUND(
+                    (6371 * acos(
+                        cos(radians(?)) * cos(radians(ubicaciones.latitud)) * 
+                        cos(radians(ubicaciones.longitud) - radians(?)) + 
+                        sin(radians(?)) * sin(radians(ubicaciones.latitud))
+                    )
+                ), 4) AS distancia',
+                [$latitud, $longitud, $latitud]
+            )
+            ->where('farmacias.turno', 1) // Solo farmacias con turno 1
+            ->orderBy('distancia') // Ordenar por distancia más cercana
+            ->first();
     
-    // Obtenemos la hora actual
-    $horaActual = now()->format('H:i');
+        if (!$farmacia) {
+            return response()->json([
+                'mensaje' => 'No se encontraron farmacias abiertas cercanas con turno continuo'
+            ], 404);
+        }
     
-    // Buscamos la farmacia más cercana
-    $farmacia = DB::table('farmacias')
-        ->join('ubicaciones', 'farmacias.id_ubicacion', '=', 'ubicaciones.id')
-        ->select(
-            'farmacias.id',
-            'farmacias.nombre',
-            'farmacias.telefono',
-            'farmacias.email',
-            'farmacias.horario',
-            'farmacias.servicios',
-            'farmacias.turno',
-            'farmacias.id_ubicacion',
-            'ubicaciones.id as ubicacion_id',
-            'ubicaciones.direccion',
-            DB::raw('ROUND(ubicaciones.latitud, 4) as latitud'),
-            DB::raw('ROUND(ubicaciones.longitud, 4) as longitud')
-        )
-        ->selectRaw(
-            'ROUND(
-                (6371 * acos(
-                    cos(radians(?)) * cos(radians(ubicaciones.latitud)) * 
-                    cos(radians(ubicaciones.longitud) - radians(?)) + 
-                    sin(radians(?)) * sin(radians(ubicaciones.latitud))
-                )
-            ), 4) AS distancia',
-            [$latitud, $longitud, $latitud]
-        )
-        ->where('farmacias.turno', 1)
-        ->orWhereRaw(
-            '? BETWEEN SUBSTRING_INDEX(farmacias.horario, " - ", 1) 
-            AND SUBSTRING_INDEX(farmacias.horario, " - ", -1)',
-            [$horaActual]
-        )
-        ->orderBy('distancia')
-        ->first();
-
-    if (!$farmacia) {
-        return response()->json([
-            'mensaje' => 'No se encontraron farmacias abiertas cercanas'
-        ], 404);
+        // Preparamos la respuesta con la estructura deseada
+        $respuesta = [
+            'ubicacion' => [
+                'id' => $farmacia->ubicacion_id,
+                'direccion' => $farmacia->direccion,
+                'latitud' => $farmacia->latitud,
+                'longitud' => $farmacia->longitud,
+                'distancia' => $farmacia->distancia // distancia en kilómetros
+            ]
+        ];
+        
+        return response()->json($respuesta, 200);
     }
-
-    // Preparamos la respuesta con la estructura deseada
-    $respuesta = [
-        'ubicacion' => [
-            'id' => $farmacia->ubicacion_id,
-            'direccion' => $farmacia->direccion,
-            'latitud' => $farmacia->latitud,
-            'longitud' => $farmacia->longitud,
-            'distancia' => $farmacia->distancia // distancia en kilómetros
-        ]
-    ];
-    
-    return response()->json($respuesta, 200);
-}
     // public function obtenerUbicacionMasCercana($latitud, $longitud)
     // {
     //     // Redondeamos las coordenadas de entrada a 4 decimales
