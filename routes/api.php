@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\farmaciaController;
 use App\Http\Controllers\FarmaciaProductoController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UbicacionController;
 use Illuminate\Http\Request;
@@ -56,3 +57,6 @@ Route::get('/ubicacion/{latitud}/{longitud}',[UbicacionController::class,'obtene
 Route::get('/ubicacion/{id_ubicacion}', [UbicacionController::class, 'show']);
 //Guardar farmacia producto 
 Route::post('/farmacia-producto', [FarmaciaProductoController::class, 'store']);
+
+//Login 
+Route::post('/login', [LoginController::class, 'login']);
