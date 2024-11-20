@@ -43,9 +43,8 @@ class FarmaciaProductoController extends Controller
         $validatedData = $request->validate([
             'id_farmacia' => 'required|integer|exists:farmacias,id',
             'id_producto' => 'required|integer|exists:productos,id',
-            'id_sucursal' => 'required|integer|exists:sucursales,id',
             'precio' => 'required|numeric|min:0',
-            'disponibilidad' => 'required|boolean',
+            'disponibilidad' => 'required|integer',
         ]);
     
         $farmaciaProducto = FarmaciaProducto::create($validatedData);
